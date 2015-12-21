@@ -14,22 +14,29 @@
 
 - name: Install pip Psiphon requirements
   pip: >
+    virtualenv={{ PSIPHON_VIRTUALENV }}
     name={{ item }}
   with_items:
     - wget
     - jsonpickle
     - pexpect
 
+- name: Template virtualenv start script wrapper
+  template: >
+    src=venv_exec.j2
+    dest="{{ PSIPHON_VIRTUALENV }}/exec"
+    mode=0755
+
 - name: Copy psi_generate_dat.py
   template: >
     src=psi_generate_dat.py.j2
-    dest=/tmp/psi_generate_dat.py
+    dest={{ PSIPHON_VIRTUALENV }}/psi_generate_dat.py
     mode=0755
 
 - name: Run psi_generate_dat.py to create Psiphon servers data file
-  command: /tmp/psi_generate_dat.py
+  command: "{{ PSIPHON_VIRTUALENV }}/exec {{ PSIPHON_VIRTUALENV }}/psi_generate_dat.py"
   args:
-    chdir: /tmp/
+    chdir: "{{ PSIPHON_VIRTUALENV }}"
 
 - name: Move file to {{ PSIPHON_PYCLIENT_PATH }}
-  command: mv /tmp/psi_client.dat "{{ PSIPHON_PYCLIENT_PATH  }}"
+  command: mv "{{ PSIPHON_VIRTUALENV }}/psi_client.dat" "{{ PSIPHON_PYCLIENT_PATH }}/"

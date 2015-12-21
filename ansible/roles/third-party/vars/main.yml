@@ -1,2 +1,3 @@
 ---
 PSIPHON_PYCLIENT_PATH: "{{ ansible_env.HOME }}/psiphon-circumvention-system/pyclient"
+PSIPHON_VIRTUALENV: "{{ ansible_env.HOME }}/.virtualenvs/psiphon"
