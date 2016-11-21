@@ -1,0 +1,27 @@
+---
+- name: ensure instance is created
+  eclipsis_droplet:
+    state: present
+    api_baseurl: "{{ api_baseurl }}"
+    name: "{{ instance_name }}"
+    region: "{{ instance_region }}"
+    size: "{{ ram_size }}"
+    disk: "{{ disk_size }}"
+    ssh_key_id: "{{ ssh_key_id }}"
+    image_id: "{{ image_id }}"
+    unique_name: "yes"
+  register: instance_info
+
+- debug:
+    msg: "Instance info {{ instance_info }}"
+
+- name: add instance to in-memory hosts
+  add_host:
+    hostname: "{{ instance_info.droplet.networks.v4[0].ip_address }}"
+    groupname: eclipsis_hosts
+
+- name: wait for it to listen on port 22
+  wait_for:
+    state: started
+    host: "{{ instance_info.droplet.networks.v4[0].ip_address }}"
+    port: 22

@@ -1,0 +1,4 @@
+api_baseurl: "https://portal.eclips.is/portal/api/v2"
+instance_region: 'ams1' # Amsterdam
+image_id: 6 # Debian Jessie x64
+ssh_key_id: 136 # OONI admin SSH key

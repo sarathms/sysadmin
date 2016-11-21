@@ -145,7 +145,7 @@ class DODroplet(object):
         else:
             raise DropletException('Unknown error occured')
 
-    def create_droplet_request(self, name, size, image, region, disk,
+    def create_droplet_request(self, name, size, image, region, disk, vcpus,
                                ssh_key_id):
         data = {
             "name": name,
@@ -154,6 +154,7 @@ class DODroplet(object):
             "image": image,
             "region": region,
             "ssh_keys": ssh_key_id,
+            "cpu_cores": vcpus,
         }
         response = self.rest.post('/droplet', data=data)
         status = response.status_code
@@ -233,6 +234,7 @@ class DODroplet(object):
                 disk=self.get_key_or_fail('disk'),
                 image=self.get_key_or_fail('image'),
                 ssh_key_id=self.module.params['ssh_key_id'],
+                vcpus=self.get_key_or_fail('vcpus'),
             )
             changed = True
         else:
@@ -289,10 +291,11 @@ def main():
             region=dict(aliases=['region_id']),
             wait=dict(type="bool", default=True),
             wait_timeout=dict(type="int", default=60),
-            ssh_key_id=dict(type='int')
+            ssh_key_id=dict(type='int'),
+            vcpus=dict(type='int', aliases=['cpu_cores'], default=1)
         ),
         required_together=(
-            ['size', 'image', 'region', 'disk'],
+            ['size', 'image', 'region', 'disk', 'vcpus'],
         ),
         required_one_of=(
             ['id', 'name'],

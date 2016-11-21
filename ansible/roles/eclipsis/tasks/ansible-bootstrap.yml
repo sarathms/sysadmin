@@ -1,0 +1,6 @@
+---
+- name: update apt cache
+  raw: apt-get update
+
+- name: install ansible managed node requirements
+  raw: apt-get install -y python-simplejson
