@@ -1,9 +1,8 @@
 ---
-- include: ansible-version.yml
-
 - hosts: ooni-explorer-next.test.ooni.io
   vars:
     letsencrypt_nginx: yes
+    letsencrypt_domains: "ooni-explorer-next.test.ooni.io"
   roles:
     - docker_py
     - letsencrypt # temporary disabled
