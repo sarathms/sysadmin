@@ -1,0 +1,4 @@
+# for upgrade
+explorer_tag: '20180125-bbd7a76c'
+explorer_backend_ipv4: 172.28.14.254
+explorer_backend_port: 3100 # hardcoded in the image

@@ -1,0 +1,18 @@
+---
+- include: ansible-version.yml
+
+- hosts: ooni-explorer-next.test.ooni.io
+  vars:
+    letsencrypt_nginx: yes
+  roles:
+    - docker_py
+    - letsencrypt # temporary disabled
+
+- hosts: ooni-explorer-next.test.ooni.io
+  gather_facts: false # already gathered
+  vars:
+    ansible_python_interpreter: '/root/venv/bin/python2.7' # to control docker
+    explorer_domain: ooni-explorer-next.test.ooni.io
+  roles:
+    - role: ooni-explorer-next
+
